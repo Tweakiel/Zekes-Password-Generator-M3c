@@ -9,13 +9,13 @@
 
 //declare variables char, and input
 
-let specialChar= ["!","#","$","%","&","'","(",")","*","+",",","-",".","/","\:","\;"," < ","="," > "," ? ","@","[","\\", "]","^","_","`","{","|", "}","~"];
+let specialChar = ["!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "\:", "\;", " < ", "=", " > ", " ? ", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"];
 
-let lowerAlpha= ["a","b","c","d","e","f","g","h", "i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+let lowerAlpha = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
-let capitalAlpha=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",];
+let capitalAlpha = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",];
 
-let numbers=["0","1","2","3","4","5","6","7","8","9"];
+let numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 var generateBtn = document.querySelector("#generate");
 
@@ -31,168 +31,96 @@ let promptLower;
 //returned criteria result for generated password
 let criteria;
 
+
+
 //generate password
-function generatePassword(){
-
-    
+function generatePassword() {
 
 
-    promptEnter=parseInt(prompt("How many characters would you like for your password (min:8, max:132)"));
+  let placeholderPassword = [];
 
-    //if statement for criteria and user error
-    //NotaNumber
-    if(isNaN(promptEnter)){
+  promptEnter = parseInt(prompt("How many characters would you like for your password (min:8, max:132)"));
 
-      alert("Input Invalid. Not A Number!");
-      return;
+  //if statement for criteria and user error
+  //NotaNumber
+  if (isNaN(promptEnter)) {
 
-    }else if(!promptEnter){
+    alert("Input Invalid. Not A Number!");
+    return;
+
+  } else if (!promptEnter) {
 
 
     alert("Please put a value.");
 
     return;
 
-    }
-  
-    else if(promptEnter < 8 || promptEnter > 128){
+  }
 
-    promptEnter=alert("It is required to pick a length between 8 and 128. Try again.");
+  else if (promptEnter < 8 || promptEnter > 128) {
+
+    promptEnter = alert("It is required to pick a length between 8 and 128. Try again.");
 
     return;
 
     //user put proper input proceed criteria using confirm()
-    }else {
+  } else {
 
-      promptCapital=confirm("do you want Capital characters?");
-      promptLower=confirm("do you want lower characters?");
-      promptNumber=confirm("would like to add numbers to your password?");
-      promptSpecialChar=confirm("How about special charcters (eg. !,@,~)");
+    promptCapital = confirm("do you want Capital characters?");
+    promptLower = confirm("do you want lower characters?");
+    promptNumber = confirm("would like to add numbers to your password?");
+    promptSpecialChar = confirm("How about special charcters (eg. !,@,~)");
 
-    }; 
-    
-    //now dictate possible outcomes for choices
+  };
 
-    //4 no
-    if (!promptCapital && !promptLower & !promptNumber && !promptSpecialChar){
+  //now dictate possible outcomes for choices
 
-      alert("A Criteria is needed for a random generated password. Try Again.");
- 
-    }//to combine and generate, i will use .concat method to combine the multiple arrays, in this case i will combine all 4 arrays together.
+  //4 no
+  if (!promptCapital && !promptLower & !promptNumber && !promptSpecialChar) {
 
-    //TO CHECK IF IT ARRAYS ARE COMBINED I PUT CONSOLE.LOG 
-    else if(promptCapital && promptLower & promptNumber && promptSpecialChar){
+    alert("A Criteria is needed for a random generated password. Try Again.");
+    return;
 
-      criteria=lowerAlpha.concat(numbers,capitalAlpha,specialChar);
 
-      console.log(criteria)
+  }//to combine and generate, i will use .concat method to combine the multiple arrays, in this case i will combine all 4 arrays together.
 
-    }
-    //all of the 3 different yes options
-    //no special characters
-    else if(promptCapital && promptLower & promptNumber){
+  if (promptCapital) {
 
-      criteria=lowerAlpha.concat(numbers,capitalAlpha);
-      console.log(criteria)
-    }
-    //no number
-    else if(promptCapital && promptLower & promptSpecialChar){
+    criteria = placeholderPassword.concat(capitalAlpha);
+  }
+  if (promptLower) {
+    criteria = placeholderPassword.concat(lowerAlpha);
+  }
+  if (promptNumber) {
+    criteria = placeholderPassword.concat(numbers);
+  }
+  if (promptSpecialChar) {
+    criteria = placeholderPassword.concat(specialChar);
+  }
+  //TO CHECK IF IT ARRAYS ARE COMBINED I PUT CONSOLE.LOG 
+  //used after declaring all possible outcomes (line ~154)
+  
 
-      criteria=lowerAlpha.concat(specialChar,capitalAlpha);
-      console.log(criteria)
-    }
-    // no capitals
-    else if(specialChar && promptLower & promptNumber){
+  //randomizer from criteria, using for loop with placeholderpassword var from earlier 
+  for (let i = 0; i < promptEnter; i++) {
 
-      criteria=lowerAlpha.concat(numbers,specialChar);
-      console.log(criteria)
+    let chosenCriteria = criteria[Math.floor(Math.random() * criteria.length)];
 
-    }
-    // no lower case
-    else if(promptCapital && promptSpecialChar & promptNumber){
+    placeholderPassword.push(chosenCriteria);
 
-      criteria=capitalAlpha.concat(numbers,specialChar);
-      console.log(criteria)
+    //this console log shows the randomized length and characters
+    console.log(chosenCriteria);
+  }
 
-    }//2 options
-    // lower and number
-    else if(promptLower && promptNumber){
+  console.log(placeholderPassword);
 
-      criteria=lowerAlpha.concat(numbers);
-      console.log(criteria)
-    }
-    // lower and spec
-    else if(promptLower && promptSpecialChar){
+  //this uses the combined arrays (chosen criteria) and combines with the placeholder array and then the join method returns it as a string after concatenating
+  let password = placeholderPassword.join("");
 
-      criteria=lowerAlpha.concat(specialChar);
-      console.log(criteria)
-    }
-    //lower and capital
-    else if(promptLower && promptCapital){
+  //this pastes the generated password on the 'textbox'
+  return password;
 
-      criteria=lowerAlpha.concat(capitalAlpha);
-      console.log(criteria)
-    }
-    //capital and number
-    else if(promptCapital && promptNumber){
-
-      criteria=capitalAlpha.concat(numbers);
-      console.log(criteria)
-    }
-    //capital and spec
-    else if(promptCapital && promptSpecialChar){
-
-      criteria=capitalAlpha.concat(specialChar);
-      console.log(criteria)
-    }
-    //number and special
-    else if(promptNumber && promptSpecialChar){
-
-      criteria=numbers.concat(specialChar);
-      console.log(criteria)
-    } 
-    // FOR ONE OPTION ONLY :^(
-    //lower
-    else if(promptLower){
-      criteria= lowerAlpha;
-      console.log(criteria)
-    }
-    else if(promptCapital){
-      criteria= capitalAlpha;
-      console.log(criteria)
-    }
-    else if(promptNumber){
-      criteria= numbers;
-      console.log(criteria)
-    }
-    else if(promptSpecialChar){
-      criteria= specialChar;
-      console.log(criteria)
-    }
-      //TO CHECK IF IT ARRAYS ARE COMBINED I PUT CONSOLE.LOG 
-    //used after declaring all possible outcomes (line ~154)
-      let  placeholderPassword=[];
-
-      //randomizer from criteria, using for loop with placeholderpassword var from earlier 
-      for(let i=0; i< promptEnter; i++){
-
-        let chosenCriteria=criteria[Math.floor(Math.random()*criteria.length)];
-
-        placeholderPassword.push(chosenCriteria);
-
-        //this console log shows the randomized length and characters
-        console.log(chosenCriteria);
-      }
-      
-      console.log(placeholderPassword);
-
-      //this uses the combined arrays (chosen criteria) and combines with the placeholder array and then the join method returns it as a string after concatenating
-      let password=placeholderPassword.join("");
-
-      //this pastes the generated password on the 'textbox'
-      return password;
-
-      //AGAIN TO CHECK IF PASSWORD IS REAL AND ARRAYS ARE BEING COMBIND I PUT CONSOLE.LOG FOR PROOF
+  //AGAIN TO CHECK IF PASSWORD IS REAL AND ARRAYS ARE BEING COMBIND I PUT CONSOLE.LOG FOR PROOF
 }
 
 
